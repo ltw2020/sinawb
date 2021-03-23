@@ -3,7 +3,9 @@ package com.example.sinawb;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     public static RvAdapter rvAdapter=null;
+    private SwipeRefreshLayout swipeRefresh;
 
 
     public static Handler mHandler=new Handler(){
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +42,18 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(rvAdapter);
 
         HttpUtil.sendHttpGetRequest("https://v2.alapi.cn/api/new/wbtop?token=YKFChO0a2thlNZ99");
+
+        swipeRefresh=findViewById(R.id.refreshlayout);
+        swipeRefresh.setColorSchemeColors(R.color.design_default_color_primary);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                HttpUtil.sendHttpGetRequest("https://v2.alapi.cn/api/new/wbtop?token=YKFChO0a2thlNZ99");
+                rvAdapter.notifyDataSetChanged();
+                swipeRefresh.setRefreshing(false);
+
+            }
+        });
 
     }
 }

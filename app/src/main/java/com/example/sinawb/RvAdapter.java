@@ -70,11 +70,6 @@ public class RvAdapter extends RecyclerView.Adapter<RvAdapter.RvViewHolder> {
             case 44: case 45: case 46: case 47: case 48:
                 case 49: holder.imageView.setImageResource(R.drawable.hot);
                          break;
-
-
-
-
-
         }
         Log.i("tag",mList.get(2).getData());
     }
