@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class HttpUtil {
 
-    public static void sendHttpGetRequest(String address){
+    public static void sendHttpGetRequest(String address,HttpCallbackListener httpCallbackListener){
 
 
         //开启子线程执行网络请求
@@ -44,13 +44,17 @@ public class HttpUtil {
                         if(responseCode==200){
                             InputStream in =connection.getInputStream();//从接口处获取输入流
                             String responseData =StreamToString(in);//服务器返回数据
-                            Json json=new Json(responseData);
+                            if (httpCallbackListener!=null){
+                                httpCallbackListener.onResponse(responseData);
+                            }
+                            
                         }
                         else {
                             throw new NetworkErrorException("response status is"+responseCode);
                         }
 
                     } catch (Exception e) {
+                        httpCallbackListener.onError(e);
                         e.printStackTrace();
                     } finally {
                         if(connection!=null){
@@ -81,6 +85,7 @@ public class HttpUtil {
         }
         return sb.toString();
     }
+
 }
 
 

@@ -9,10 +9,13 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import Util.HttpCallbackListener;
 import Util.HttpUtil;
+import Util.Json;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,14 +44,34 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(rvAdapter);
 
-        HttpUtil.sendHttpGetRequest("https://v2.alapi.cn/api/new/wbtop?token=YKFChO0a2thlNZ99");
+        HttpUtil.sendHttpGetRequest("https://v2.alapi.cn/api/new/wbtop?token=YKFChO0a2thlNZ99", new HttpCallbackListener() {
+            @Override
+            public void onResponse(String response) {
+                Json json=new Json(response);
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
 
         swipeRefresh=findViewById(R.id.refreshlayout);
         swipeRefresh.setColorSchemeColors(R.color.design_default_color_primary);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                HttpUtil.sendHttpGetRequest("https://v2.alapi.cn/api/new/wbtop?token=YKFChO0a2thlNZ99");
+                HttpUtil.sendHttpGetRequest("https://v2.alapi.cn/api/new/wbtop?token=YKFChO0a2thlNZ99", new HttpCallbackListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        Json json=new Json(response);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
                 rvAdapter.notifyDataSetChanged();
                 swipeRefresh.setRefreshing(false);
 
