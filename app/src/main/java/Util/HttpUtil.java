@@ -20,8 +20,22 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class HttpUtil {
+    private volatile static HttpUtil instance;
+    private HttpUtil(){}
+
+    public static HttpUtil getInstance(){
+        if (instance==null){
+            synchronized (HttpUtil.class){
+                if (instance==null){
+                    instance=new HttpUtil();
+                }
+            }
+        }
+        return instance;
+    }
 
     public static void sendHttpGetRequest(String address,HttpCallbackListener httpCallbackListener){
+
 
 
         //开启子线程执行网络请求

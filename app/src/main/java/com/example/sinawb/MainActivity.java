@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(rvAdapter);
 
-        HttpUtil.sendHttpGetRequest("https://v2.alapi.cn/api/new/wbtop?token=YKFChO0a2thlNZ99", new HttpCallbackListener() {
+        HttpUtil.getInstance().sendHttpGetRequest("https://v2.alapi.cn/api/new/wbtop?token=YKFChO0a2thlNZ99", new HttpCallbackListener() {
             @Override
             public void onResponse(String response) {
                 Json json=new Json(response);
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                HttpUtil.sendHttpGetRequest("https://v2.alapi.cn/api/new/wbtop?token=YKFChO0a2thlNZ99", new HttpCallbackListener() {
+                HttpUtil.getInstance().sendHttpGetRequest("https://v2.alapi.cn/api/new/wbtop?token=YKFChO0a2thlNZ99", new HttpCallbackListener() {
                     @Override
                     public void onResponse(String response) {
                         Json json=new Json(response);
